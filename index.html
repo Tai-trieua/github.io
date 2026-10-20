@@ -2,110 +2,224 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chúc mừng 20-10 Vợ Yêu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Gửi Vợ Yêu 20-10</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            margin: 0;
-            padding: 0;
-            background: radial-gradient(circle, #2b0015, #000000);
+            background: #0f0c29;
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
-            color: white;
-            text-align: center;
         }
-
-        .container {
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .wrapper {
             position: relative;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 105, 180, 0.2);
-            animation: fadeIn 2s ease-in-out;
-            max-width: 90%;
+            cursor: pointer;
+            perspective: 1000px;
         }
-
-        h1 {
-            font-size: 3rem;
-            color: #ff69b4;
-            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493, 0 0 30px #ff1493;
-            margin-bottom: 10px;
+        .envelope {
+            width: 320px;
+            height: 200px;
+            background: #ff4b2b;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            transition: transform 0.5s ease;
         }
-
-        h2 {
-            font-size: 2rem;
-            color: #ffd700;
-            text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #ffe4e1;
-        }
-
-        .heart {
+        .envelope::before {
+            content: '';
             position: absolute;
-            top: -10vh;
-            color: #ff69b4;
-            font-size: 20px;
-            animation: fall linear forwards;
+            top: 0; left: 0;
+            border-top: 100px solid #ff2a55;
+            border-right: 160px solid transparent;
+            border-bottom: 100px solid transparent;
+            border-left: 160px solid transparent;
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 4;
+            border-radius: 10px 10px 0 0;
+        }
+        .instruction {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            animation: pulse 1.5s infinite;
+        }
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .letter h1 {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .letter h2 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        .letter p {
+            color: #f1f1f1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        /* Active States */
+        .wrapper.open .envelope::before {
+            transform: rotateX(180deg);
             z-index: 1;
         }
-
-        @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
+        .wrapper.open .letter {
+            transform: translateY(-120px);
+            background: rgba(255, 255, 255, 0.15);
+            z-index: 5;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .wrapper.open .envelope {
+            transform: translateY(30px);
+        }
+        .wrapper.open .instruction {
+            opacity: 0;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Chúc Mừng 20/10</h1>
-        <h2>Huỳnh Thị Mỹ Linh</h2>
-        <p>Chúc vợ yêu của anh có một ngày 20/10 thật vui vẻ, hạnh phúc và luôn xinh đẹp.<br>Cảm ơn em vì đã luôn đồng hành cùng anh!</p>
+    <canvas id="fireworks"></canvas>
+
+    <div class="wrapper" onclick="openCard(this)">
+        <div class="envelope"></div>
+        <div class="letter">
+            <h1>Chúc Mừng 20/10</h1>
+            <h2>Vợ Yêu Huỳnh Thị Mỹ Linh</h2>
+            <p>Mong em luôn xinh đẹp, hạnh phúc và bình an. Cảm ơn em vì mọi điều tuyệt vời em mang đến cho gia đình mình. Anh yêu em!</p>
+        </div>
+        <div class="instruction">Chạm vào thư để mở 💌</div>
     </div>
 
     <script>
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.innerHTML = "❤";
-            heart.classList.add("heart");
-            
-            // Randomize position, size, and animation duration
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.fontSize = Math.random() * 20 + 10 + "px";
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            
-            // Randomize color slightly for variety
-            const colors = ['#ff69b4', '#ff1493', '#ffc0cb', '#db7093'];
-            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            document.body.appendChild(heart);
+        let particles = [];
+        let isOpened = false;
 
-            // Remove heart after it falls to keep DOM clean
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 5 + 2;
+                this.speedX = Math.random() * 6 - 3;
+                this.speedY = Math.random() * 6 - 3;
+                this.color = `hsl(${Math.random() * 60 + 330}, 100%, 60%)`; // Pink/Red/Purple hues
+                this.life = 100;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 1;
+                if(this.size > 0.1) this.size -= 0.05;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                // Heart shape drawing
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.scale(this.size/10, this.size/10);
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(0, -3, -5, -15, -15, -15);
+                ctx.bezierCurveTo(-25, -15, -25, -2, -25, -2);
+                ctx.bezierCurveTo(-25, 10, -10, 20, 0, 30);
+                ctx.bezierCurveTo(10, 20, 25, 10, 25, -2);
+                ctx.bezierCurveTo(25, -2, 25, -15, 15, -15);
+                ctx.bezierCurveTo(5, -15, 0, -3, 0, 0);
+                ctx.fill();
+                ctx.restore();
+            }
         }
 
-        // Generate hearts every 150ms
-        setInterval(createHeart, 150);
+        function createFireworks() {
+            const x = window.innerWidth / 2;
+            const y = window.innerHeight / 2;
+            for (let i = 0; i < 80; i++) {
+                particles.push(new Particle(x, y));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            if(isOpened && Math.random() < 0.05) {
+               // Random small pops after opening
+               const rx = Math.random() * canvas.width;
+               const ry = Math.random() * canvas.height;
+               for(let j=0; j<10; j++) particles.push(new Particle(rx, ry));
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function openCard(element) {
+            if(!isOpened) {
+                element.classList.add('open');
+                isOpened = true;
+                createFireworks();
+                animate();
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
     </script>
 </body>
 </html>
